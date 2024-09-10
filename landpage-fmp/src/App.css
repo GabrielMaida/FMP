@@ -1,0 +1,23 @@
+.App {
+  text-align: center;
+}
+
+header {
+  background-image: url('https://via.placeholder.com/1920x600');
+  background-size: cover;
+  background-position: center;
+}
+
+section {
+  padding: 50px 0;
+}
+
+h2 {
+  font-weight: bold;
+}
+
+footer {
+  background-color: #343a40;
+  color: white;
+  padding: 10px 0;
+}
