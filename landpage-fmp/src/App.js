@@ -9,20 +9,20 @@ function App() {
                 <p className=''>A Solução da sua procrastinação!</p>
             </header>
 
-            <section>
+            <section className='py-5'>
                 <div className="container">
-                    <h2>Problema</h2>
-                    <p>
+                    <h2 className='mb-4'>Problema</h2>
+                    <p className='pb-5'>
                         A procrastinação é um dos maiores desafios enfrentados por milhões de pessoas em todo o mundo. A falta de organização e motivação pessoal afeta a produtividade e bem-estar, enquanto a dificuldade em manter uma rotina saudável de exercícios físicos é comum. A maioria das pessoas deseja ter uma vida mais organizada e ativa, mas muitas vezes se sentem presas em ciclos de procrastinação ou desmotivação.
                     </p>
-                    <div className="row mt-5">
+                    <div className="row">
                         <div className="col-md-4">
                             <h3 className='mb-4'>Nicho</h3>
                             <p>Todos que desejam melhor sua saúde física e intelecto, de forma intuitiva, divertida e recompensadora.</p>
                         </div>
                         <div className="col-md-4">
                             <h3 className='mb-4'>Proposta de Valor</h3>
-                            <p>O aplicativo proporcionará ferramentas para que os usuários possam armazenar seus exercícios físicos, ao mesmo tempo que disponibiliza exercícios e conteúdos de programação e inglês, tudo isso, utilizando gamificação para uma experiência menos convencional e mais divertida.</p>
+                            <p>O aplicativo proporcionará ferramentas para que os usuários possam armazenar seus exercícios físicos, ao mesmo tempo que disponibiliza exercícios de raciocínio lógico, tudo isso, utilizando gamificação para uma experiência mais divertida.</p>
                         </div>
                         <div className="col-md-4">
                             <h3 className='mb-4'>Equipe</h3>
@@ -32,7 +32,7 @@ function App() {
                 </div>
             </section>
 
-            <section className="bg-light">
+            <section className="bg-light py-5">
                 <div className="container">
                     <h2 className='mb-4'>Serviços</h2>
                     <div className="row">
@@ -45,13 +45,13 @@ function App() {
                         <div className="col-md-4">
                             <h5 className='mb-4'>Exercícios para Enriquecimento da Mente</h5>
                             <p>
-                                Criamos soluções sob medida para atender às necessidades exclusivas de cada cliente.
+                                Oferecemos uma variedade de desafios cognitivos, incluindo exercícios de lógica e raciocínio, projetados para estimular seu crescimento intelectual e expandir seus conhecimentos de forma divertida e envolvente.
                             </p>
                         </div>
                         <div className="col-md-4">
                             <h5 className='mb-4'>Gamificação</h5>
                             <p>
-                                Oferecemos suporte técnico especializado para garantir o funcionamento perfeito das suas operações.
+                                Transformamos sua jornada de aprendizado e fitness em uma experiência divertida e motivadora, com sistemas de recompensas, desafios e conquistas que tornam seu progresso mais envolvente e gratificante.
                             </p>
                         </div>
                     </div>
