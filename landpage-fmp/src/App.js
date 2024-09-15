@@ -59,7 +59,7 @@ function App() {
             </section>
 
             <footer className="bg-dark pt-3">
-                <p>&copy; 2024 Empresa XYZ. Todos os direitos reservados.</p>
+                <p>&copy; 2024 FisicaMente Produtivo. Todos os direitos reservados.</p>
             </footer>
         </div>
     );
