@@ -23,7 +23,7 @@ const exercicios = [{
                     }]
 
 app.get('/api/exercicios', (req, res) => {
-    res.send(exercicios);
+    res.status(200).json(exercicios);
 })
 
 app.listen(4000, () => {
