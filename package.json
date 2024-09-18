@@ -30,5 +30,8 @@
     "cors": "^2.8.5",
     "create-react-app": "^5.0.1",
     "express": "^4.21.0"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
   }
 }
