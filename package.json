@@ -2,12 +2,15 @@
   "name": "fisicamente-produtivo",
   "version": "1.0.0",
   "description": "*FMP - FisicaMente Produtivo*",
-  "main": "backend/src/app.js",
+  "main": "backend/src/server.js",
   "directories": {
     "doc": "docs"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "testback": "jest --roots=backend/tests/",
+    "testfront": "jest --roots=frontend/tests/",
+    "start": "node backend/src/server.js",
+    "t": "node backend/src/t.js"
   },
   "repository": {
     "type": "git",
@@ -17,9 +20,10 @@
     "nodejs",
     "reactjs",
     "express",
-    "api"
+    "api",
+    "jest"
   ],
-  "author": "",
+  "author": "Gabriel Antônio Maida, Luiz Felipe Carvalho Gomes, Pedro Nicoletti Obalski, Thiago Souto Xavier",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/GabrielMaida/FisicaMente-Produtivo/issues"
