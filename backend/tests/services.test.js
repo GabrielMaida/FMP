@@ -1,7 +1,7 @@
 const {returnExercises, returnUser} = require('../src/services');
 
 describe('Exercises Services', () => {
-    it('should return exercises', () => {
+    test('Should return exercises', () => {
         const exercises = returnExercises();
         expect(exercises).toStrictEqual([
             { exerciseId: 1, name: 'Push-up', unitXp: 10 },
@@ -13,7 +13,7 @@ describe('Exercises Services', () => {
 });
 
 describe('User Services', () => {
-    it('should return user', () => {
+    test('Should return user', () => {
         const user = returnUser();
         expect(user).toHaveProperty('userId');
         expect(user).toHaveProperty('name');
