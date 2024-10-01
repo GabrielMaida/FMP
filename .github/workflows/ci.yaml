@@ -29,8 +29,8 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Run Jest Backend
-        run: npm run testback
+      - name: Run Jest
+        run: npm test
 
       - name: Archive code coverage results
         uses: actions/upload-artifact@v4

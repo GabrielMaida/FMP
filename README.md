@@ -12,6 +12,6 @@ Software de Produtividade - Voltado para Saúde Física e Mental
 
 🧑‍💻👩‍💻 *Equipe:* Gabriel Antônio Maida, Luiz Felipe Carvalho Gomes, Pedro Nicoletti Obalski, Thiago Souto Xavier.
 
-🔗 *URL GitHub:* https://github.com/GabrielMaida/FisicaMente-Produtivo
-
-🛬 *URL Landpage:* https://github.com/GabrielMaida/FisicaMente-Produtivo (Ainda não funcional)
+🔗 *URLs GitHub:* \
+Back-End: https://github.com/GabrielMaida/FMP-Back-End \
+Front-End: https://github.com/GabrielMaida/FMP-Front-End

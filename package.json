@@ -1,38 +1,37 @@
 {
-  "name": "fisicamente-produtivo",
+  "name": "backend-fisicamente-produtivo",
   "version": "1.0.0",
-  "description": "*FMP - FisicaMente Produtivo*",
-  "main": "backend/src/server.js",
+  "description": "*FMP - FisicaMente Produtivo (Back-End)*",
+  "main": "src/server.js",
   "directories": {
     "doc": "docs"
   },
   "scripts": {
-    "testback": "jest --roots=backend/tests/",
-    "testfront": "jest --roots=frontend/tests/",
-    "start": "node backend/src/server.js",
-    "t": "node backend/src/t.js"
+    "test": "jest",
+    "start": "node src/server.js",
+    "t": "node src/t.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/GabrielMaida/FisicaMente-Produtivo.git"
+    "url": "git+https://github.com/GabrielMaida/FMP-Back-End.git"
   },
   "keywords": [
     "nodejs",
-    "reactjs",
+    "javascript",
     "express",
     "api",
-    "jest"
+    "jest",
+    "backend"
   ],
   "author": "Gabriel Antônio Maida, Luiz Felipe Carvalho Gomes, Pedro Nicoletti Obalski, Thiago Souto Xavier",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/GabrielMaida/FisicaMente-Produtivo/issues"
+    "url": "https://github.com/GabrielMaida/FMP-Back-End/issues"
   },
-  "homepage": "https://github.com/GabrielMaida/FisicaMente-Produtivo#readme",
+  "homepage": "https://github.com/GabrielMaida/FMP-Back-End#readme",
   "dependencies": {
     "axios": "^1.7.7",
     "cors": "^2.8.5",
-    "create-react-app": "^5.0.1",
     "express": "^4.21.0"
   },
   "devDependencies": {
