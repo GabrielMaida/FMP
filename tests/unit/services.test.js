@@ -1,4 +1,4 @@
-const {returnExercises, returnUser} = require('../src/services');
+const {returnExercises, returnUser} = require('../../src/services');
 
 describe('Exercises Services', () => {
     test('Should return exercises', () => {

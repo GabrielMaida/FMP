@@ -1,8 +1,8 @@
 // Testes dos Controllers
-const { exercisesController, userController } = require('../src/controllers');
-const { returnExercises, returnUser } = require('../src/services');
+const { exercisesController, userController } = require('../../src/controllers');
+const { returnExercises, returnUser } = require('../../src/services');
 
-jest.mock('../src/services');
+jest.mock('../../src/services');
 
 describe('Controllers', () => {
     let req, res;
