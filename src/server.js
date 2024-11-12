@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const axios = require('axios');
+// const axios = require('axios');
 const mongoose = require('mongoose');
 require('dotenv').config();
 
@@ -13,7 +13,7 @@ const PORT = process.env.PORT || 3000;
 
 // Conectar ao MongoDB
 mongoose.connect(MONGODB_URI)
-    .catch(err => console.log("MongoDB connection error"));
+    .catch(err => console.log("MongoDB connection error:" + err));
 
 // Definir o esquema para os exercícios
 const exerciseSchema = new mongoose.Schema({
@@ -113,7 +113,7 @@ app.get('/api/exercise/:exerciseId', async (req, res) => {
 // API para criar um novo usuário
 app.post('/api/user', async (req, res) => {
     try {
-        newUser = {
+        const newUser = {
             userId: req.body.userId,
             name: req.body.name,
             email: req.body.email,
@@ -123,7 +123,7 @@ app.post('/api/user', async (req, res) => {
             level: 1
         }
 
-        const user = await User.create(newUser);
+        /*const user = */await User.create(newUser);
 
         res.status(201).json({ message: `User ${req.body.userId} sucessfully created.`});
     } catch (err) {
@@ -134,7 +134,7 @@ app.post('/api/user', async (req, res) => {
 // API para excluir um usuário específico pelo seu Id
 app.delete('/api/user/:userId', async (req, res) => {
     try {
-        const user = await User.findOneAndDelete({ userId: req.params.userId });
+        /*const user = */await User.findOneAndDelete({ userId: req.params.userId });
 
         res.status(200).json({ message: `User ${req.params.userId} sucessfully deleted.`});
     } catch (err) {
