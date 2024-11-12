@@ -123,13 +123,40 @@ app.post('/api/user', async (req, res) => {
             level: 1
         }
 
-        /*const user = */await User.create(newUser);
+        const user = await User.create(newUser);
 
-        res.status(201).json({ message: `User ${req.body.userId} sucessfully created.`});
+        res.status(201).json({ message: `User ${req.body.userId} sucessfully created.`, data: user});
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
 });
+
+// API para editar os dados de um usuário específico pelo seu Id
+app.put('/api/user/:userId', async (req, res) => {
+    try {
+        const user = await User.findOne({ userId: req.params.userId });
+
+        if (user) {
+            user.name = req.body.name;
+            user.email = req.body.email;
+            user.tel = req.body.tel;
+            user.exercises = req.body.exercises;
+            
+            // Verificação de modificação e salvamento
+            if (user.isModified('exercises')) {
+                await user.save();
+            }
+
+            res.status(200).json({ message: `User ${req.params.userId} sucessfully updated.`, data: user});
+        } else {
+            res.status(404).json({ message: `UserId ${req.params.userId} couldn't be found.` });
+        }
+
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+});
+
 
 // API para excluir um usuário específico pelo seu Id
 app.delete('/api/user/:userId', async (req, res) => {
