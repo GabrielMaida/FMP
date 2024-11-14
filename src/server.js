@@ -1,6 +1,5 @@
 const express = require('express');
 const cors = require('cors');
-// const axios = require('axios');
 const mongoose = require('mongoose');
 require('dotenv').config();
 
@@ -31,7 +30,7 @@ const userSchema = new mongoose.Schema({
     tel: String,
     exercises: [{ type: Number }],
     xpTotal: Number,
-    level: Number,
+    level: Number
 });
 
 // Criar os modelos
