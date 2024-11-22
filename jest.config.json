@@ -5,6 +5,6 @@
     "coverageReporters": ["clover", "json", "lcov", "text"],
     "testMatch": ["**/*.test.js"],
     "verbose": true,
-    "openHandlesTimeout": 0
+    "openHandlesTimeout": 0  
   }
   
