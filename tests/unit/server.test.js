@@ -4,12 +4,11 @@ const { MongoMemoryServer } = require('mongodb-memory-server');
 const app = require('../../src/server');
 
 let mongoServer;
-const PORT = process.env.MONGODB_URI;
 
 beforeAll(async () => {
     mongoServer = await MongoMemoryServer.create();
     const mongoUri = mongoServer.getUri();
-    await mongoose.connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+    await mongoose.connect(secrets.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 });
 
 afterAll(async () => {
