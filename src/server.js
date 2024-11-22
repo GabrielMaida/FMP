@@ -15,7 +15,7 @@ const PORT = process.env.PORT || 3000;
 try {
     mongoose.connect(MONGODB_URI);
 } catch (error) {
-    console.log("MongoDB connection error:" + err)
+    console.log("MongoDB connection error:" + error)
 }
 
 // Definir o esquema para os exercícios
