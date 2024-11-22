@@ -20,7 +20,7 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      # Checks-outs your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v2
         with:
@@ -28,6 +28,14 @@ jobs:
       
       - name: Install dependencies
         run: npm install
+
+      - name: Set up MongoDB
+        run: |
+          sudo apt-get install -y mongodb
+          sudo service mongodb start
+
+      - name: Set environment variables
+        run: echo "MONGODB_URI=mongodb://localhost:27017/test" >> $GITHUB_ENV
 
       - name: Run ESLint
         run: npm run lint
