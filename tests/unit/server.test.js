@@ -1,5 +1,21 @@
 const request = require('supertest');
-const app = require('../../src/server'); // Ajuste o caminho conforme necessário
+const mongoose = require('mongoose');
+const { MongoMemoryServer } = require('mongodb-memory-server');
+const app = require('../../src/server');
+require('dotenv').config();
+
+let mongoServer;
+
+beforeAll(async () => {
+    mongoServer = await MongoMemoryServer.create();
+    const mongoUri = mongoServer.getUri();
+    await mongoose.connect(process.env.MONGODB_URI);
+});
+
+afterAll(async () => {
+    await mongoose.disconnect();
+    await mongoServer.stop();
+});
 
 describe('API Users', () => {
     it('deve retornar todos os usuários', async () => {
@@ -10,6 +26,7 @@ describe('API Users', () => {
 
     it('deve retornar um usuário específico pelo seu Id', async () => {
         const userId = 0;
+        // await User.create({ userId, name: 'Test User', email: 'test@example.com', tel: '123456789', exercises: [], xpTotal: 0, level: 1 });
         const response = await request(app).get(`/api/user/${userId}`);
         expect(response.status).toBe(200);
         expect(response.body).toHaveProperty('userId', userId);
