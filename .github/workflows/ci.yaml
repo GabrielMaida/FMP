@@ -35,7 +35,7 @@ jobs:
           sudo service mongodb start
 
       - name: Set environment variables
-        run: echo "MONGODB_URI=mongodb://localhost:27017/test" >> $GITHUB_ENV
+        run: echo "MONGODB_URI=mongodb+srv://GabrielAntonio:cesusc2024@cluster0.vs1rl.mongodb.net/FMP" >> $GITHUB_ENV
 
       - name: Run ESLint
         run: npm run lint
