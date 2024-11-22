@@ -10,6 +10,8 @@ app.use(cors());
 const MONGODB_URI = process.env.MONGODB_URI;
 const PORT = process.env.PORT || 3500;
 
+console.log(MONGODB_URI);
+
 // Conectar ao MongoDB
 /* istanbul ignore next */
 try {
