@@ -7,7 +7,7 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-const MONGODB_URI = process.env.MONGODB_URI || 'o';
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb+srv://GabrielAntonio:cesusc2024@cluster0.vs1rl.mongodb.net/FMP';
 const PORT = process.env.PORT || 3500;
 
 console.log(MONGODB_URI);
