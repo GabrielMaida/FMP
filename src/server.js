@@ -7,7 +7,7 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-const MONGODB_URI = process.env.MONGODB_URI;
+const MONGODB_URI = process.env.MONGODB_URI || 'o';
 const PORT = process.env.PORT || 3500;
 
 console.log(MONGODB_URI);
@@ -42,6 +42,21 @@ const userSchema = new mongoose.Schema({
 // Criar os modelos
 const Exercise = mongoose.model('Exercise', exerciseSchema);
 const User = mongoose.model('user', userSchema);
+
+//integrantes do grupo
+const data = {
+    integrantes: [
+        { nome: 'Gabriel Antônio' },
+        { nome: '' },
+        { nome: '' },
+        { nome: '' }
+    ]
+};
+
+//metodo chamar integrantes
+app.get('/integrantes', (req, res) => {
+    res.json(data);
+});
 
 // API para retornar todos os usuários
 app.get('/api/users', async (req, res) => {

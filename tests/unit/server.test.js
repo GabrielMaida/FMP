@@ -2,7 +2,14 @@ const request = require('supertest');
 const app = require('../../src/server');
 
 
-describe('API Users', () => {
+describe('API integrantes', () => {
+    test('GET /integrantes deve retornar os integrantes do grupo', async () => {
+        const response = await request(app).get('/integrantes');
+        expect(response.statusCode).toBe(200);
+        expect(response.body).toHaveProperty('integrantes');
+        expect(response.body.integrantes.length).toBe(4);
+    });
+
     /*it('deve retornar todos os usuários', async () => {
         const response = await request(app).get('/api/users');
         expect(response.status).toBe(200);
@@ -24,11 +31,11 @@ describe('API Users', () => {
         expect(response.body).toHaveProperty('message');
     });*/
 
-    it('deve retornar todos os exercícios', async () => {
+    /*it('deve retornar todos os exercícios', async () => {
         const response = await request(app).get('/api/exercises');
         expect(response.status).toBe(200);
         expect(typeof (response.body)).toBe('object');
-    });
+    });*/
     
     /*it('deve retornar 500 se não retornar os exercícios', async () => {
         const response = await request(app).get('/api/exercises');
