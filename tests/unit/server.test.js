@@ -1,6 +1,6 @@
 const request = require('supertest');
 const app = require('../../src/server');
-
+const mongoose = require('mongoose');
 
 describe('API integrantes', () => {
     test('GET /integrantes deve retornar os integrantes do grupo', async () => {
