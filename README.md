@@ -1,6 +1,6 @@
 ## **FMP - FisicaMente Produtivo**
 
-### PMI IV - ADS 41
+### PMI IV
 
 💡 Software de Produtividade - Voltado para Saúde Física e Mental
 
@@ -18,7 +18,7 @@ O aplicativo proporcionará ferramentas para que os usuários possam armazenar s
 
 ### 🧑‍💻👩‍💻 Equipe
 
-Gabriel Antônio Maida, Luiz Felipe Carvalho Gomes, Pedro Nicoletti Obalski.
+Gabriel Antônio Maida, Luiz Felipe Carvalho Gomes, Pedro Nicoletti Obalski, Pedro Arruda
 
 ### 🔗 GitHub
 
