@@ -10,16 +10,15 @@
 		"type": "git",
 		"url": "git+https://github.com/GabrielMaida/FMP.git"
 	},
-	"author": "Gabriel Antônio Maida, Luiz Felipe Carvalho Gomes, Pedro Nicoletti Obalski",
+	"author": "Gabriel Antônio Maida, Luiz Felipe Carvalho Gomes, Pedro Nicoletti Obalski, Pedro Arruda",
 	"license": "MIT",
 	"bugs": {
 		"url": "https://github.com/GabrielMaida/FMP/issues"
 	},
 	"homepage": "https://github.com/GabrielMaida/FMP#readme",
 	"dependencies": {
-		"axios": "^1.7.7",
 		"cors": "^2.8.5",
-		"dotenv": "^16.4.5",
+		"dotenv": "^16.5.0",
 		"express": "^4.21.0",
 		"mongoose": "^8.7.0"
 	},
