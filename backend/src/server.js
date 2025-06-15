@@ -11,7 +11,7 @@ app.use(cors());
 
 const MONGODB_URI =
   process.env.MONGODB_URI ||
-  "mongodb+srv://readonly_user:qs7UALDMx7UHhgZ8@cluster0.gotgxlc.mongodb.net/FMP-Data?retryWrites=true&w=majority&appName=Cluster0";
+  "mongodb+srv://admin_user:6Tkl2PFRqklgHnkq@cluster0.gotgxlc.mongodb.net/FMP-Data?retryWrites=true&w=majority&appName=Cluster0";
 const PORT = process.env.PORT || 3500;
 
 mongoose

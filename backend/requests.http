@@ -1,5 +1,5 @@
 ### GET User by ID
-GET http://localhost:3500/api/user/1 HTTP/1.1
+GET http://localhost:3500/api/user/0 HTTP/1.1
 
 ### GET Users
 GET http://localhost:3500/api/user HTTP/1.1
@@ -9,7 +9,7 @@ POST http://localhost:3500/api/user HTTP/1.1
 Content-Type: application/json
 
 {
-	"id_usuario":1,
+	"id_usuario":2,
 	"nome":"gabriel",
 	"senha":"1234",
 	"url_imagem":"https://i.pinimg.com/736x/94/1d/71/941d71a2241c764419aafc390329f81c.jpg",
@@ -19,7 +19,7 @@ Content-Type: application/json
 }
 
 ### PUT User by ID
-PUT http://localhost:3500/api/user/1 HTTP/1.1
+PUT http://localhost:3500/api/user/2 HTTP/1.1
 Content-Type: application/json
 
 {
@@ -33,7 +33,7 @@ Content-Type: application/json
 }
 
 ### DELETE User by ID
-DELETE http://localhost:3500/api/user/2 HTTP/1.1
+DELETE http://localhost:3500/api/user/1 HTTP/1.1
 
 ### GET Tarefa by ID
 GET http://localhost:3500/api/tarefa/0 HTTP/1.1
