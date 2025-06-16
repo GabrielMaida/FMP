@@ -48,16 +48,25 @@ const Usuario = mongoose.model("Usuario", usuarioSchema, "usuarios");
 ////////////////////////////////////////////////////////////////////
 
 // Endpoint para retornar usuário por ID
+// Quero que ao retornar o usuário com suas atividades, cada valor do array tarefas seja vinculado a um documento da coleção tarefas através do id_tarefa, mostrando assim as informações da tarefa relacionada e não mais apenas os ids
 app.get("/api/user/:id_usuario", async (req, res) => {
   try {
     const user = await Usuario.findOne({ id_usuario: req.params.id_usuario });
-    if (user) {
-      res.status(200).json(user);
-    } else {
+
+    if (!user) {
       res.status(404).json({
         message: `id_usuario ${req.params.id_usuario} couldn't be found.`,
       });
     }
+
+    const tarefas = await Tarefa.find({ id_tarefa: { $in: user.tarefas } });
+
+    const userResponse = {
+      ...user.toObject(),
+      tarefas: tarefas,
+    };
+
+    res.status(200).json({ user: userResponse });
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
@@ -67,7 +76,22 @@ app.get("/api/user/:id_usuario", async (req, res) => {
 app.get("/api/user", async (req, res) => {
   try {
     const users = await Usuario.find({});
-    res.status(200).json(users);
+    const tarefas = await Tarefa.find({});
+
+    const tarefasMap = {};
+    tarefas.forEach((tarefa) => {
+      tarefasMap[tarefa.id_tarefa] = tarefa;
+    });
+
+    const usersWithTarefas = users.map((user) => {
+      const userObj = user.toObject();
+      userObj.tarefas = userObj.tarefas
+        .map((id) => tarefasMap[id])
+        .filter(Boolean);
+      return userObj;
+    });
+
+    res.status(200).json(usersWithTarefas);
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
