@@ -6,6 +6,8 @@ import Signup from './components/Signup';
 import Profile from './components/Profile';
 import ActivityList from './components/ActivityList'; // Importa o novo componente de listagem
 import ActivityManagement from './components/ActivityManagement'; // Importa o componente de gerenciamento
+import Help from './components/Help'; // Importa o componente de Ajuda
+import About from './components/About'; // Importa o componente Sobre Nós
 import { ActivitiesProvider } from './contexts/ActivitiesContext'; // Importa o provider de atividades
 
 // Componente de Layout principal que inclui o cabeçalho e a navegação inferior
@@ -32,6 +34,21 @@ function MainLayout() {
       <main className="main-content">
         <Outlet />
       </main>
+
+      {/* Navegação Inferior com ícones */}
+      <nav className="bottom-nav">
+        <div className="nav-icons">
+          <div className="nav-icon blue">17</div>
+          <div className="nav-icon red">12</div>
+          <div className="nav-icon green">17</div>
+          <div className="nav-icon purple">19</div>
+          <div className="nav-icon blue">14</div>
+          <div className="nav-icon pink">16</div>
+          <div className="nav-icon orange">20</div>
+          <div className="nav-icon green">21</div>
+          <div className="nav-icon code">&lt;/&gt;</div>
+        </div>
+      </nav>
     </div>
   );
 }
@@ -47,7 +64,7 @@ function App() {
           <Route path="/" element={<Login />} />
           {/* Rota para a tela de Cadastro */}
           <Route path="/cadastro" element={<Signup />} />
-
+          
           {/* Rotas que usam o layout principal (cabeçalho e navegação inferior) */}
           <Route path="/" element={<MainLayout />}>
             {/* Rota para a tela de Listagem de Atividades */}
@@ -58,9 +75,9 @@ function App() {
             <Route path="atividades/editar/:id" element={<ActivityManagement />} />
             {/* Rota para a tela de Perfil */}
             <Route path="perfil" element={<Profile />} />
-            {/* Rotas para as páginas de Ajuda e Sobre Nós (podem ser criadas posteriormente) */}
-            <Route path="ajuda" element={<div>Página de Ajuda em construção</div>} />
-            <Route path="sobre" element={<div>Página Sobre Nós em construção</div>} />
+            {/* Rotas para as páginas de Ajuda e Sobre Nós */}
+            <Route path="ajuda" element={<Help />} />
+            <Route path="sobre" element={<About />} />
           </Route>
         </Routes>
       </Router>

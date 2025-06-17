@@ -2,12 +2,13 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 80vh;
+  min-height: 100vh;
   background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
-  max-width: 500px; /* Ou um valor similar, como 360px, 420px, etc. */
+  padding: 2rem;
+  max-width: 510px; /* Ou um valor similar, como 360px, 420px, etc. */
   width: 100%; /* Garante que ele ocupe 100% da largura disponível até o max-width */
   margin: 0 auto; /* Centraliza o bloco horizontalmente */
-  padding: 2rem; /* Adicione um padding interno se necessário */
+  box-sizing: border-box; /* Garante que padding não aumente a largura total */
 }
 
 .profile-card {

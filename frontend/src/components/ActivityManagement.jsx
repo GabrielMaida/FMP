@@ -14,8 +14,8 @@ function ActivityManagement() {
   const [activityTitle, setActivityTitle] = useState('');
   const [activityDescription, setActivityDescription] = useState('');
   const [difficulty, setDifficulty] = useState(0);
-  const [habit, setHabit] = useState('');
-  const [frequency, setFrequency] = useState('');
+  const [habit, setHabit] = useState(''); // Estado para o hábito
+  const [frequency, setFrequency] = useState(''); // Estado para a frequência
   const [isLoading, setIsLoading] = useState(false);
 
   // Determina se estamos no modo de edição
@@ -30,8 +30,8 @@ function ActivityManagement() {
         setActivityTitle(activityToEdit.title);
         setActivityDescription(activityToEdit.description || '');
         setDifficulty(activityToEdit.difficulty);
-        setHabit(activityToEdit.habit || '');
-        setFrequency(activityToEdit.frequency || '');
+        setHabit(activityToEdit.habit || ''); // Define o hábito carregado
+        setFrequency(activityToEdit.frequency || ''); // Define a frequência carregada
       } else {
         // Se a atividade não for encontrada, exibe um alerta e redireciona
         alert('Atividade não encontrada!');
@@ -55,6 +55,15 @@ function ActivityManagement() {
       alert('Por favor, selecione a dificuldade da atividade.');
       return false;
     }
+    // Validação para os novos campos select
+    if (!habit) {
+      alert('Por favor, selecione o tipo de hábito.');
+      return false;
+    }
+    if (!frequency) {
+      alert('Por favor, selecione a frequência.');
+      return false;
+    }
     return true;
   };
 
@@ -75,8 +84,8 @@ function ActivityManagement() {
         title: activityTitle.trim(),
         description: activityDescription.trim(),
         difficulty: difficulty,
-        habit: habit.trim(),
-        frequency: frequency.trim(),
+        habit: habit, // Usa o valor selecionado do combo box
+        frequency: frequency, // Usa o valor selecionado do combo box
       };
 
       if (isEditing) {
@@ -178,29 +187,36 @@ function ActivityManagement() {
 
           {/* Campos de hábito e frequência, dispostos lado a lado */}
           <div className="form-row">
+            {/* Campo de Hábito (combo box) */}
             <div className="form-group half">
               <label htmlFor="habit">HÁBITO:</label>
-              <input
-                type="text"
+              <select
                 id="habit"
                 value={habit}
                 onChange={(e) => setHabit(e.target.value)}
                 className="form-input"
-                placeholder="Ex: Diário, Semanal..."
-                maxLength={50}
-              />
+                required // Torna o campo obrigatório
+              >
+                <option value="">Selecione...</option>
+                <option value="Positivo">Positivo</option>
+                <option value="Negativo">Negativo</option>
+              </select>
             </div>
+            {/* Campo de Frequência (combo box) */}
             <div className="form-group half">
               <label htmlFor="frequency">FREQUÊNCIA:</label>
-              <input
-                type="text"
+              <select
                 id="frequency"
                 value={frequency}
                 onChange={(e) => setFrequency(e.target.value)}
                 className="form-input"
-                placeholder="Ex: 3x por semana, Todos os dias..."
-                maxLength={50}
-              />
+                required // Torna o campo obrigatório
+              >
+                <option value="">Selecione...</option>
+                <option value="Diário">Diário</option>
+                <option value="Semanal">Semanal</option>
+                <option value="Mensal">Mensal</option>
+              </select>
             </div>
           </div>
 
@@ -247,4 +263,5 @@ function ActivityManagement() {
 }
 
 export default ActivityManagement;
+
 

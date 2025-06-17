@@ -1,0 +1,208 @@
+.help-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  padding: 2rem;
+  background-color: #f5f5f5;
+}
+
+.help-content {
+  max-width: 1200px;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 2rem;
+}
+
+.help-section {
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  padding: 2rem;
+  border-radius: 1rem;
+  color: white;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* Seção de Hábitos Positivos */
+.positive-habits {
+  grid-row: span 2;
+}
+
+.habit-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.habit-icon.positive {
+  background-color: rgba(34, 197, 94, 0.2);
+  border: 2px solid #22c55e;
+  color: #22c55e;
+}
+
+.habit-icon.negative {
+  background-color: rgba(239, 68, 68, 0.2);
+  border: 2px solid #ef4444;
+  color: #ef4444;
+}
+
+.help-section h3 {
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.help-section h4 {
+  margin: 1rem 0 0.5rem 0;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.help-section p {
+  margin-bottom: 1rem;
+  line-height: 1.6;
+  font-size: 0.9rem;
+}
+
+.help-section ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.help-section li {
+  padding: 0.25rem 0;
+  font-size: 0.9rem;
+  position: relative;
+  padding-left: 1rem;
+}
+
+.help-section li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* Seção de Hábitos Negativos */
+.negative-habits {
+  grid-row: span 2;
+}
+
+/* Seção do Sistema XP */
+.xp-system {
+  grid-column: span 1;
+}
+
+.xp-breakdown {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.xp-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 0.5rem;
+}
+
+.stars {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.star {
+  color: #fbbf24;
+  font-size: 1.2rem;
+}
+
+.xp-value {
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+/* Seção de Frequência */
+.frequency-section {
+  grid-column: span 3;
+  text-align: center;
+}
+
+.frequency-options {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.frequency-card {
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  text-align: center;
+}
+
+.frequency-card h4 {
+  margin: 0 0 1rem 0;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.frequency-placeholder {
+  height: 60px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 0.5rem;
+  border: 2px dashed rgba(255, 255, 255, 0.3);
+}
+
+/* Responsividade */
+@media (max-width: 1024px) {
+  .help-content {
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+  
+  .frequency-section {
+    grid-column: span 2;
+  }
+}
+
+@media (max-width: 768px) {
+  .help-container {
+    padding: 1rem;
+  }
+  
+  .help-content {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .positive-habits,
+  .negative-habits {
+    grid-row: span 1;
+  }
+  
+  .frequency-section {
+    grid-column: span 1;
+  }
+  
+  .frequency-options {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .help-section {
+    padding: 1.5rem;
+  }
+}
+

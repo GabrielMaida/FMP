@@ -82,6 +82,12 @@ body {
   width: 100%;           /* Garante que o main-content ocupe toda a largura disponível */
 }
 
+/* Adicionado para centralizar os itens dentro do grid */
+.main-content > * {
+  justify-self: center;
+  align-self: center;
+}
+
 /* Left Section */
 .left-section {
   display: flex;
@@ -271,39 +277,6 @@ body {
   transition: transform 0.2s;
 }
 
-.nav-icon:hover {
-  transform: translateY(-2px);
-}
-
-.nav-icon.blue {
-  background-color: #3b82f6;
-}
-
-.nav-icon.red {
-  background-color: #ef4444;
-}
-
-.nav-icon.green {
-  background-color: #10b981;
-}
-
-.nav-icon.purple {
-  background-color: #8b5cf6;
-}
-
-.nav-icon.pink {
-  background-color: #ec4899;
-}
-
-.nav-icon.orange {
-  background-color: #f97316;
-}
-
-.nav-icon.code {
-  background-color: #374151;
-  font-family: 'Courier New', monospace;
-}
-
 /* Responsive Design */
 @media (max-width: 1024px) {
   .main-content {
@@ -356,4 +329,5 @@ body {
     font-size: 0.8rem;
   }
 }
+
 

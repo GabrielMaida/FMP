@@ -16,32 +16,32 @@ export const useActivities = () => {
 export const ActivitiesProvider = ({ children }) => {
   // Estado inicial com algumas atividades de exemplo
   const [activities, setActivities] = useState([
-    { 
-      id: 1, 
-      title: 'Tomar Água', 
+    {
+      id: 1,
+      title: 'Tomar Água',
       description: 'Beber 2 litros de água por dia',
-      difficulty: 3, 
-      habit: 'Diário', 
+      difficulty: 3,
+      habit: 'Positivo',
       frequency: 'Todos os dias',
-      completed: false 
+      completed: false
     },
-    { 
-      id: 2, 
-      title: 'Caminhada 30min', 
+    {
+      id: 2,
+      title: 'Caminhada 30min',
       description: 'Caminhar por 30 minutos',
-      difficulty: 2, 
-      habit: 'Semanal', 
-      frequency: '3 vezes por semana',
-      completed: true 
+      difficulty: 2,
+      habit: 'Positivo',
+      frequency: 'Semanal',
+      completed: true
     },
-    { 
-      id: 3, 
-      title: 'Meditar 10min', 
+    {
+      id: 3,
+      title: 'Meditar 10min',
       description: 'Meditar por 10 minutos',
-      difficulty: 1, 
-      habit: 'Diário', 
-      frequency: 'Todos os dias',
-      completed: false 
+      difficulty: 1,
+      habit: 'Positivo',
+      frequency: 'Mensal',
+      completed: false
     },
   ]);
 
@@ -58,9 +58,9 @@ export const ActivitiesProvider = ({ children }) => {
 
   // Função para atualizar uma atividade existente
   const updateActivity = (id, updatedData) => {
-    setActivities(prev => 
-      prev.map(activity => 
-        activity.id === id 
+    setActivities(prev =>
+      prev.map(activity =>
+        activity.id === id
           ? { ...activity, ...updatedData }
           : activity
       )
@@ -74,9 +74,9 @@ export const ActivitiesProvider = ({ children }) => {
 
   // Função para marcar/desmarcar uma atividade como concluída
   const toggleActivityComplete = (id) => {
-    setActivities(prev => 
-      prev.map(activity => 
-        activity.id === id 
+    setActivities(prev =>
+      prev.map(activity =>
+        activity.id === id
           ? { ...activity, completed: !activity.completed }
           : activity
       )
