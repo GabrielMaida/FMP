@@ -133,8 +133,6 @@ app.put("/api/user/:id_usuario", async (req, res) => {
   try {
     const updateData = req.body;
 
-    // `new: true` retorna o documento atualizado.
-    // `runValidators: true` garante que as validações do schema sejam executadas.
     const updatedUser = await Usuario.findOneAndUpdate(
       { id_usuario: req.params.id_usuario },
       updateData,
@@ -146,7 +144,7 @@ app.put("/api/user/:id_usuario", async (req, res) => {
     } else {
       res
         .status(404)
-        .json({ message: `Usuário com id ${id_usuario} não encontrado.` });
+        .json({ message: `Usuário com id ${req.params.id_usuario} não encontrado.` });
     }
   } catch (error) {
     res.status(400).json({ message: error.message });

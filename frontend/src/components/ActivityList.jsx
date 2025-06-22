@@ -1,20 +1,17 @@
 import React from "react";
-import { Link, useOutletContext } from "react-router-dom";
-import "./ActivityList.css"; // Estilos específicos para a tela de listagem de atividades
+import { Link, useOutletContext, useNavigate } from "react-router-dom";
+import "./ActivityList.css";
 
 // Componente da tela de Listagem de Atividades
 // Este componente exibe uma lista de atividades do usuário com opções para marcar como concluída, editar ou remover
 function ActivityList() {
   // Obtém o usuário e a função para atualizá-lo do layout pai (MainLayout)
   const { user, setUser } = useOutletContext();
+  const navigate = useNavigate();
 
   const handleActivityComplete = async (e) => {
     // Apenas adiciona XP se a caixa for marcada (checked = true)
-    if (!e.target.checked) {
-      // Opcional: se quiser que o XP seja removido ao desmarcar, adicione a lógica aqui.
-      // Por enquanto, não faz nada ao desmarcar.
-      return;
-    }
+    if (!e.target.checked) return;
 
     // Verifica se o usuário já atingiu o nível máximo
     if (!user || user.exp >= 1000) {
@@ -68,6 +65,61 @@ function ActivityList() {
     }
   };
 
+  // Editar atividade: redireciona para tela de edição
+  const handleEdit = (id_tarefa) => {
+    navigate(`/atividades/editar/${id_tarefa}`);
+  };
+
+  // Remover atividade: faz DELETE no backend e atualiza usuário
+  const handleRemove = async (id_tarefa) => {
+    if (!window.confirm("Tem certeza que deseja remover esta atividade?"))
+      return;
+    try {
+      // Remove a tarefa do banco
+      const response = await fetch(
+        `http://localhost:3500/api/tarefa/${id_tarefa}`,
+        { method: "DELETE" }
+      );
+      if (!response.ok) throw new Error("Falha ao remover atividade.");
+
+      // Remove o id da tarefa do array de tarefas do usuário e atualiza no backend
+      const updatedTarefas = user.tarefas
+        .filter((t) => t.id_tarefa !== id_tarefa)
+        .map((t) => t.id_tarefa);
+
+      const updatedUserData = {
+        ...user,
+        tarefas: updatedTarefas,
+      };
+
+      const userUpdateResponse = await fetch(
+        `http://localhost:3500/api/user/${user.id_usuario}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(updatedUserData),
+        }
+      );
+      if (!userUpdateResponse.ok)
+        throw new Error("Falha ao atualizar usuário.");
+
+      // Atualiza o estado local do usuário
+      const refreshedUserResponse = await fetch(
+        `http://localhost:3500/api/user/${user.id_usuario}`
+      );
+      const refreshedUser = await refreshedUserResponse.json();
+      setUser(refreshedUser.user);
+    } catch (error) {
+      alert("Erro ao remover atividade.");
+      console.error(error);
+    }
+  };
+
+  // Adicionar atividade: redireciona para tela de criação
+  const handleAdd = () => {
+    navigate("/atividades/nova");
+  };
+
   return (
     // Container principal da tela de listagem de atividades
     <div className="activity-list-container">
@@ -111,17 +163,15 @@ function ActivityList() {
                 </div>
 
                 <div className="activity-actions">
-                  <Link
-                    to={`/atividades/editar/${activity.id_tarefa}`}
+                  <button
                     className="action-button edit-button"
+                    onClick={() => handleEdit(activity.id_tarefa)}
                   >
                     Editar
-                  </Link>
+                  </button>
                   <button
                     className="action-button delete-button"
-                    onClick={() =>
-                      alert("Funcionalidade de remover a ser implementada.")
-                    }
+                    onClick={() => handleRemove(activity.id_tarefa)}
                   >
                     Remover
                   </button>
@@ -132,9 +182,9 @@ function ActivityList() {
         )}
 
         {/* Botão para adicionar uma nova atividade */}
-        <Link to="/atividades/nova" className="add-activity-button">
+        <button onClick={handleAdd} className="add-activity-button">
           Adicionar Nova Atividade
-        </Link>
+        </button>
       </div>
     </div>
   );

@@ -1,21 +1,19 @@
-import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { useActivities } from '../contexts/ActivitiesContext'; // Importa o hook do contexto
-import './ActivityManagement.css'; // Estilos específicos para o gerenciamento de atividades
+import React, { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import "./ActivityManagement.css";
 
 // Componente da tela de Gerenciamento de Atividades
 // Este componente é usado tanto para criar novas atividades quanto para editar atividades existentes
 function ActivityManagement() {
   const { id } = useParams(); // Pega o ID da atividade da URL (se for edição)
   const navigate = useNavigate(); // Hook para navegação programática
-  const { addActivity, updateActivity, getActivityById } = useActivities(); // Funções do contexto
 
   // Estados para os campos do formulário de atividade
-  const [activityTitle, setActivityTitle] = useState('');
-  const [activityDescription, setActivityDescription] = useState('');
+  const [activityTitle, setActivityTitle] = useState("");
+  const [activityDescription, setActivityDescription] = useState("");
   const [difficulty, setDifficulty] = useState(0);
-  const [habit, setHabit] = useState(''); // Estado para o hábito
-  const [frequency, setFrequency] = useState(''); // Estado para a frequência
+  const [habit, setHabit] = useState(""); // Estado para o hábito
+  const [frequency, setFrequency] = useState(""); // Estado para a frequência
   const [isLoading, setIsLoading] = useState(false);
 
   // Determina se estamos no modo de edição
@@ -24,85 +22,139 @@ function ActivityManagement() {
   // Efeito para carregar os dados da atividade se estiver em modo de edição
   useEffect(() => {
     if (isEditing) {
-      const activityToEdit = getActivityById(id);
-      if (activityToEdit) {
-        // Preenche os campos do formulário com os dados da atividade
-        setActivityTitle(activityToEdit.title);
-        setActivityDescription(activityToEdit.description || '');
-        setDifficulty(activityToEdit.difficulty);
-        setHabit(activityToEdit.habit || ''); // Define o hábito carregado
-        setFrequency(activityToEdit.frequency || ''); // Define a frequência carregada
-      } else {
-        // Se a atividade não for encontrada, exibe um alerta e redireciona
-        alert('Atividade não encontrada!');
-        navigate('/atividades');
-      }
+      fetch(`http://localhost:3500/api/tarefa/${id}`)
+        .then((res) => res.json())
+        .then((data) => {
+          setActivityTitle(data.nome || "");
+          setActivityDescription(data.descricao || "");
+          setDifficulty(data.dificuldade || 0);
+          setHabit(
+            data.habito === true
+              ? "Positivo"
+              : data.habito === false
+              ? "Negativo"
+              : ""
+          );
+          setFrequency(
+            data.frequencia === "diario"
+              ? "Diário"
+              : data.frequencia === "semanal"
+              ? "Semanal"
+              : data.frequencia === "mensal"
+              ? "Mensal"
+              : ""
+          );
+        })
+        .catch(() => {
+          alert("Atividade não encontrada!");
+          navigate("/atividades");
+        });
     }
-  }, [id, isEditing, getActivityById, navigate]);
+  }, [id, isEditing, navigate]);
 
-  // Função para lidar com o clique nas estrelas de dificuldade
-  const handleStarClick = (rating) => {
-    setDifficulty(rating);
-  };
-
-  // Função para validar os campos do formulário
+  // Validação do formulário
   const validateForm = () => {
     if (!activityTitle.trim()) {
-      alert('Por favor, preencha o título da atividade.');
+      alert("Por favor, preencha o título da atividade.");
       return false;
     }
     if (difficulty === 0) {
-      alert('Por favor, selecione a dificuldade da atividade.');
+      alert("Por favor, selecione a dificuldade da atividade.");
       return false;
     }
-    // Validação para os novos campos select
     if (!habit) {
-      alert('Por favor, selecione o tipo de hábito.');
+      alert("Por favor, selecione o tipo de hábito.");
       return false;
     }
     if (!frequency) {
-      alert('Por favor, selecione a frequência.');
+      alert("Por favor, selecione a frequência.");
       return false;
     }
     return true;
   };
 
-  // Função para lidar com o envio do formulário (criar ou salvar edição)
+  // Envio do formulário (criação ou edição)
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    // Valida o formulário antes de prosseguir
-    if (!validateForm()) {
-      return;
-    }
-
+    if (!validateForm()) return;
     setIsLoading(true);
 
-    try {
-      // Cria um objeto com os dados da atividade
-      const activityData = {
-        title: activityTitle.trim(),
-        description: activityDescription.trim(),
-        difficulty: difficulty,
-        habit: habit, // Usa o valor selecionado do combo box
-        frequency: frequency, // Usa o valor selecionado do combo box
-      };
+    // Monta dados para API (sem id_tarefa ainda)
+    const tarefaData = {
+      nome: activityTitle.trim(),
+      descricao: activityDescription.trim(),
+      dificuldade: difficulty,
+      habito: habit === "Positivo",
+      frequencia:
+        frequency === "Diário"
+          ? "diario"
+          : frequency === "Semanal"
+          ? "semanal"
+          : frequency === "Mensal"
+          ? "mensal"
+          : "",
+    };
 
+    try {
+      let id_tarefa;
       if (isEditing) {
-        // Atualiza atividade existente
-        updateActivity(parseInt(id), activityData);
-        alert(`Atividade "${activityData.title}" atualizada com sucesso!`);
+        // PUT tarefa
+        tarefaData.id_tarefa = Number(id);
+        const tarefaRes = await fetch(
+          `http://localhost:3500/api/tarefa/${id}`,
+          {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(tarefaData),
+          }
+        );
+        if (!tarefaRes.ok) throw new Error("Erro ao atualizar tarefa.");
+        id_tarefa = Number(id);
       } else {
-        // Cria nova atividade
-        const newActivity = addActivity(activityData);
-        alert(`Atividade "${newActivity.title}" criada com sucesso!`);
+        // POST tarefa
+        // 1. Buscar todos os ids de tarefas existentes
+        const tarefasRes = await fetch("http://localhost:3500/api/tarefa");
+        const tarefas = await tarefasRes.json();
+        const usedIds = tarefas.map((t) => t.id_tarefa);
+        // 2. Encontrar o menor número inteiro não utilizado
+        let nextId = 0;
+        while (usedIds.includes(nextId)) nextId++;
+        id_tarefa = nextId;
+
+        // 3. Criar a tarefa com o menor id livre
+        const tarefaRes = await fetch("http://localhost:3500/api/tarefa", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ ...tarefaData, id_tarefa }),
+        });
+        if (!tarefaRes.ok) throw new Error("Erro ao criar tarefa.");
+
+        // 4. Buscar usuário 0 e fazer append do novo id_tarefa
+        const userRes = await fetch("http://localhost:3500/api/user/0");
+        const userData = await userRes.json();
+        const user = userData.user;
+        // Garante que tarefas seja um array de números
+        const tarefasIds = user.tarefas.map((t) => t.id_tarefa || t);
+        const updatedTarefas = [...tarefasIds, id_tarefa];
+
+        // 5. Atualizar usuário 0 com o novo array de tarefas
+        await fetch("http://localhost:3500/api/user/0", {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ ...user, tarefas: updatedTarefas }),
+        });
       }
 
-      // Redireciona de volta para a lista após salvar
-      navigate('/atividades');
+      alert(
+        isEditing
+          ? "Atividade atualizada com sucesso!"
+          : "Atividade criada e vinculada ao usuário!"
+      );
+      navigate("/atividades", { replace: true });
+      window.location.reload(); // força recarregar a página
     } catch (error) {
-      console.error('Erro ao salvar atividade:', error);
-      alert('Ocorreu um erro ao salvar a atividade. Tente novamente.');
+      alert("Ocorreu um erro ao salvar a atividade. Tente novamente.");
+      console.error(error);
     } finally {
       setIsLoading(false);
     }
@@ -110,23 +162,23 @@ function ActivityManagement() {
 
   // Função para limpar o formulário
   const handleClear = () => {
-    setActivityTitle('');
-    setActivityDescription('');
+    setActivityTitle("");
+    setActivityDescription("");
     setDifficulty(0);
-    setHabit('');
-    setFrequency('');
+    setHabit("");
+    setFrequency("");
   };
 
+  // Container principal da tela de gerenciamento de atividades
   return (
-    // Container principal da tela de gerenciamento de atividades
     <div className="activity-management-container">
       {/* Card que agrupa o formulário de gerenciamento */}
       <div className="activity-management-card">
         {/* Título dinâmico baseado no modo (criar ou editar) */}
         <h2 className="activity-management-title">
-          {isEditing ? 'Editar Atividade' : 'Criar Nova Atividade'}
+          {isEditing ? "Editar Atividade" : "Criar Nova Atividade"}
         </h2>
-        
+
         {/* Formulário de gerenciamento de atividade */}
         <form onSubmit={handleSubmit} className="activity-management-form">
           {/* Campo de título da atividade */}
@@ -167,8 +219,8 @@ function ActivityManagement() {
                 <button
                   key={star}
                   type="button"
-                  className={`star ${star <= difficulty ? 'active' : ''}`}
-                  onClick={() => handleStarClick(star)}
+                  className={`star ${star <= difficulty ? "active" : ""}`}
+                  onClick={() => setDifficulty(star)}
                   title={`Dificuldade ${star}`}
                 >
                   ★
@@ -176,12 +228,12 @@ function ActivityManagement() {
               ))}
             </div>
             <small className="difficulty-hint">
-              {difficulty === 0 && 'Selecione a dificuldade'}
-              {difficulty === 1 && 'Muito Fácil'}
-              {difficulty === 2 && 'Fácil'}
-              {difficulty === 3 && 'Médio'}
-              {difficulty === 4 && 'Difícil'}
-              {difficulty === 5 && 'Muito Difícil'}
+              {difficulty === 0 && "Selecione a dificuldade"}
+              {difficulty === 1 && "Muito Fácil"}
+              {difficulty === 2 && "Fácil"}
+              {difficulty === 3 && "Médio"}
+              {difficulty === 4 && "Difícil"}
+              {difficulty === 5 && "Muito Difícil"}
             </small>
           </div>
 
@@ -223,33 +275,36 @@ function ActivityManagement() {
           {/* Seção de ações do formulário */}
           <div className="form-actions">
             {/* Botão principal (criar ou salvar) */}
-            <button 
-              type="submit" 
+            <button
+              type="submit"
               className="action-button primary"
               disabled={isLoading}
             >
-              {isLoading 
-                ? (isEditing ? 'Salvando...' : 'Criando...') 
-                : (isEditing ? 'Salvar Alterações' : 'Criar Atividade')
-              }
+              {isLoading
+                ? isEditing
+                  ? "Salvando..."
+                  : "Criando..."
+                : isEditing
+                ? "Salvar Alterações"
+                : "Criar Atividade"}
             </button>
-            
+
             {/* Botão de limpar (apenas no modo de criação) */}
             {!isEditing && (
-              <button 
-                type="button" 
-                onClick={handleClear} 
+              <button
+                type="button"
+                onClick={handleClear}
                 className="action-button secondary"
                 disabled={isLoading}
               >
                 Limpar Campos
               </button>
             )}
-            
+
             {/* Botão de cancelar */}
-            <button 
-              type="button" 
-              onClick={() => navigate('/atividades')} 
+            <button
+              type="button"
+              onClick={() => navigate("/atividades")}
               className="action-button secondary"
               disabled={isLoading}
             >
@@ -263,5 +318,3 @@ function ActivityManagement() {
 }
 
 export default ActivityManagement;
-
-
