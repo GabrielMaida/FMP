@@ -57,6 +57,7 @@ app.get("/api/user/:id_usuario", async (req, res) => {
       res.status(404).json({
         message: `id_usuario ${req.params.id_usuario} couldn't be found.`,
       });
+      return;
     }
 
     const tarefas = await Tarefa.find({ id_tarefa: { $in: user.tarefas } });
