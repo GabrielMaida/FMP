@@ -112,11 +112,11 @@ function ActivityManagement() {
         id_tarefa = Number(id);
       } else {
         // POST tarefa
-        // 1. Buscar todos os ids de tarefas existentes
+        // 1. Buscar todas as tarefas existentes para encontrar o próximo ID disponível
         const tarefasRes = await fetch("http://localhost:3500/api/tarefa");
         const tarefas = await tarefasRes.json();
         const usedIds = tarefas.map((t) => t.id_tarefa);
-        // 2. Encontrar o menor número inteiro não utilizado
+        // Encontrar o menor número inteiro não utilizado
         let nextId = 0;
         while (usedIds.includes(nextId)) nextId++;
         id_tarefa = nextId;
@@ -133,9 +133,12 @@ function ActivityManagement() {
         const userRes = await fetch("http://localhost:3500/api/user/0");
         const userData = await userRes.json();
         const user = userData.user;
-        // Garante que tarefas seja um array de números
-        const tarefasIds = user.tarefas.map((t) => t.id_tarefa || t);
-        const updatedTarefas = [...tarefasIds, id_tarefa];
+
+        // CORREÇÃO AQUI: Garante que `user.tarefas` contenha APENAS os IDs.
+        // O `server.js` retorna objetos completos de tarefa na busca de usuário.
+        // Para enviar de volta para o PUT, precisamos apenas dos IDs.
+        const tarefasIdsExistente = user.tarefas.map((t) => t.id_tarefa);
+        const updatedTarefas = [...tarefasIdsExistente, id_tarefa];
 
         // 5. Atualizar usuário 0 com o novo array de tarefas
         await fetch("http://localhost:3500/api/user/0", {

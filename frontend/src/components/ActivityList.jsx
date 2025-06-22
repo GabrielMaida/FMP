@@ -1,41 +1,41 @@
-import React from "react";
-import { Link, useOutletContext, useNavigate } from "react-router-dom";
+// frontend/src/components/ActivityList.jsx
+import React, { useState, useEffect } from "react";
+import { useOutletContext, useNavigate } from "react-router-dom";
 import "./ActivityList.css";
+import XpNotification from "./XpNotification";
 
 // Componente da tela de Listagem de Atividades
-// Este componente exibe uma lista de atividades do usuário com opções para marcar como concluída, editar ou remover
 function ActivityList() {
-  // Obtém o usuário e a função para atualizá-lo do layout pai (MainLayout)
   const { user, setUser } = useOutletContext();
   const navigate = useNavigate();
 
+  // Estado para armazenar MÚLTIPLAS mensagens de XP
+  // Cada item será um objeto { id: uniqueId, message: string }
+  const [xpNotifications, setXpNotifications] = useState([]);
+
+  // Offset vertical para empilhar as notificações
+  const NOTIFICATION_OFFSET = 50; // Pixels entre cada notificação empilhada
+
   const handleActivityComplete = async (e) => {
-    // Apenas adiciona XP se a caixa for marcada (checked = true)
     if (!e.target.checked) return;
 
-    // Verifica se o usuário já atingiu o nível máximo
     if (!user || user.exp >= 1000) {
       alert("Nível máximo alcançado!");
-      // Desmarca a checkbox visualmente para evitar confusão
       e.target.checked = false;
       return;
     }
 
-    // 1. Calcula o novo EXP e Nível
-    const newExp = Math.min(user.exp + 10, 1000); // Adiciona 10 de EXP, com limite de 1000
-    const newLevel = Math.min(Math.floor(newExp / 100), 10); // Nível sobe a cada 100 EXP, com limite de 10
+    const xpGain = 10;
+    const newExp = Math.min(user.exp + xpGain, 1000);
+    const newLevel = Math.min(Math.floor(newExp / 100), 10);
 
-    // 2. Prepara os dados para a requisição PUT
-    // Mantém todos os dados do usuário e atualiza apenas exp e nivel
     const updatedUserData = {
       ...user,
-      // A API espera um array de IDs, então mapeamos os objetos de tarefa de volta para seus IDs
       tarefas: user.tarefas.map((t) => t.id_tarefa),
       exp: newExp,
       nivel: newLevel,
     };
 
-    // 3. Envia a requisição PUT para o backend
     try {
       const response = await fetch(
         `http://localhost:3500/api/user/${user.id_usuario}`,
@@ -52,37 +52,49 @@ function ActivityList() {
         throw new Error("Falha ao atualizar o usuário.");
       }
 
-      // 4. Atualiza o estado local buscando novamente os dados do usuário para garantir consistência
       const refreshedUserResponse = await fetch(
         `http://localhost:3500/api/user/${user.id_usuario}`
       );
       const refreshedUser = await refreshedUserResponse.json();
       setUser(refreshedUser.user);
+
+      // ADIÇÃO: Adiciona uma nova notificação ao array
+      setXpNotifications((prevNotifications) => [
+        ...prevNotifications,
+        {
+          id: Date.now(), // ID único para cada notificação
+          message: `+${xpGain} XP`,
+          initialBottom: 80 + prevNotifications.length * NOTIFICATION_OFFSET, // Empilha baseado no número de notificações ativas
+          finalBottom: 160 + prevNotifications.length * NOTIFICATION_OFFSET, // Posição final ao sumir
+        },
+      ]);
     } catch (error) {
       console.error("Erro ao atualizar o usuário:", error);
-      // Reverte a checkbox em caso de erro
       e.target.checked = false;
     }
   };
 
-  // Editar atividade: redireciona para tela de edição
+  // Função para remover uma notificação específica pelo ID
+  const handleXpNotificationFadeOut = (idToRemove) => {
+    setXpNotifications((prevNotifications) =>
+      prevNotifications.filter((notification) => notification.id !== idToRemove)
+    );
+  };
+
   const handleEdit = (id_tarefa) => {
     navigate(`/atividades/editar/${id_tarefa}`);
   };
 
-  // Remover atividade: faz DELETE no backend e atualiza usuário
   const handleRemove = async (id_tarefa) => {
     if (!window.confirm("Tem certeza que deseja remover esta atividade?"))
       return;
     try {
-      // Remove a tarefa do banco
       const response = await fetch(
         `http://localhost:3500/api/tarefa/${id_tarefa}`,
         { method: "DELETE" }
       );
       if (!response.ok) throw new Error("Falha ao remover atividade.");
 
-      // Remove o id da tarefa do array de tarefas do usuário e atualiza no backend
       const updatedTarefas = user.tarefas
         .filter((t) => t.id_tarefa !== id_tarefa)
         .map((t) => t.id_tarefa);
@@ -103,7 +115,6 @@ function ActivityList() {
       if (!userUpdateResponse.ok)
         throw new Error("Falha ao atualizar usuário.");
 
-      // Atualiza o estado local do usuário
       const refreshedUserResponse = await fetch(
         `http://localhost:3500/api/user/${user.id_usuario}`
       );
@@ -115,19 +126,26 @@ function ActivityList() {
     }
   };
 
-  // Adicionar atividade: redireciona para tela de criação
   const handleAdd = () => {
     navigate("/atividades/nova");
   };
 
   return (
-    // Container principal da tela de listagem de atividades
     <div className="activity-list-container">
-      {/* Card que agrupa a lista de atividades */}
+      {/* Renderiza MÚLTIPLOS avisos de XP */}
+      {xpNotifications.map((notification, index) => (
+        <XpNotification
+          key={notification.id}
+          message={notification.message}
+          initialBottom={notification.initialBottom}
+          finalBottom={notification.finalBottom}
+          onFadeOut={() => handleXpNotificationFadeOut(notification.id)}
+        />
+      ))}
+
       <div className="activity-list-card">
         <h2 className="activity-list-title">Minhas Atividades</h2>
 
-        {/* Verifica se há atividades para exibir */}
         {!user || user.tarefas.length === 0 ? (
           <div className="no-activities">
             <p>Você ainda não tem atividades cadastradas.</p>
@@ -135,16 +153,13 @@ function ActivityList() {
           </div>
         ) : (
           <div className="activity-items">
-            {/* Mapeia e renderiza cada atividade do usuário */}
             {user.tarefas.map((activity) => (
               <div key={activity.id_tarefa} className="activity-item">
                 <input
                   type="checkbox"
-                  // O onChange agora chama a função que atualiza o XP
                   onChange={handleActivityComplete}
                   className="activity-checkbox"
                 />
-
                 <div className="activity-info">
                   <span className="activity-title">{activity.nome}</span>
                   {activity.descricao && (
@@ -161,7 +176,6 @@ function ActivityList() {
                     </span>
                   </div>
                 </div>
-
                 <div className="activity-actions">
                   <button
                     className="action-button edit-button"
@@ -180,8 +194,6 @@ function ActivityList() {
             ))}
           </div>
         )}
-
-        {/* Botão para adicionar uma nova atividade */}
         <button onClick={handleAdd} className="add-activity-button">
           Adicionar Nova Atividade
         </button>
