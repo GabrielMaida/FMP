@@ -19,7 +19,3 @@ O aplicativo proporcionará ferramentas para que os usuários possam armazenar s
 ### 🧑‍💻👩‍💻 Equipe
 
 Gabriel Antônio Maida, Luiz Felipe Carvalho Gomes, Pedro Nicoletti Obalski, Pedro Arruda
-
-### 🔗 GitHub
-
-[https//github.com/GabrielMaida/FMP]
